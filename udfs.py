@@ -1,5 +1,22 @@
 import pandas as pd
 
+def load_ex_dataset():
+    requirements = pd.DataFrame({
+                             'title' : ['minor_cs', 'certificate_ds'],
+                             'required_courses' : [['cs_124', 'cs_128', 'cs_173', 'cs_225'], ['stat_107', 'stat_207']],
+                             'choice_list_1' : [['cs_307', 'cs_340', 'cs_341', 'cs_357', 'cs_361', 'cs_374', 'cs_407', 'cs_409'], ['math_227', 'math_257']],
+                             'choice_list_1_num' : [2, 1],
+                             'choice_list_2' : [[], ['stat_385', 'stat_420', 'stat_440', 'stat_480']],
+                             'choice_list_2_num' : [0, 1],
+                             'choice_list_3' : [[], []],
+                             'choice_list_3_num' : [0, 0],
+                             'choice_list_4' : [[], []],
+                             'choice_list_4_num' : [0, 0],
+                             'choice_list_5' : [[], []],
+                             'choice_list_5_num' : [0, 0]
+    })
+    return requirements
+
 def req_finder(requirements, student):
     cols = ['choice_list_1','choice_list_2','choice_list_3','choice_list_4','choice_list_5']
     
