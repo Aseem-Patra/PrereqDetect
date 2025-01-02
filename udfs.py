@@ -48,3 +48,8 @@ def completion_separator_choice_helper(data, list_name, student):
     
     return data
 
+def prereq_lister(student):
+    requirements = load_ex_dataset()
+    found = req_finder(requirements, student)
+    separated = completion_separator(found, student)
+    return separated
