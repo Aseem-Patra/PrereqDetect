@@ -1,5 +1,6 @@
 import pandas as pd
 
+# Loads Example Dataset
 def load_ex_dataset():
     requirements = pd.DataFrame({
                              'title' : ['minor_cs', 'certificate_ds'],
@@ -17,6 +18,25 @@ def load_ex_dataset():
     })
     return requirements
 
+# Collects list of all courses found within program lists
+def course_lister():
+    requirements = load_ex_dataset()
+
+    course_list = []
+    
+    col_names = ['required_courses','choice_list_1','choice_list_2','choice_list_3','choice_list_4','choice_list_5']
+    
+    for col in col_names:
+        combined_list = sum(requirements[col], [])
+        course_list = course_list + combined_list
+    course_list = list(set(course_list))
+    processed_list = [item.upper().replace("_", " ") for item in course_list]
+    processed_list.sort()
+
+    return processed_list
+
+
+# Determines which programs are viable for completion based on completed courses
 def req_finder(requirements, student):
     cols = ['choice_list_1','choice_list_2','choice_list_3','choice_list_4','choice_list_5']
     
@@ -36,6 +56,7 @@ def req_finder(requirements, student):
 
     return overall_no_dupes
 
+# Helps with req_finder function
 def req_finder_helper(requirements, data, list_name, student):
     filtered_choice_list = requirements[requirements[list_name].apply(lambda x: any(item in student for item in x))]
     filtered_choice_list = filtered_choice_list.copy()
@@ -43,6 +64,7 @@ def req_finder_helper(requirements, data, list_name, student):
     filtered_courses = pd.concat([filtered_choice_list, data])
     return filtered_courses
 
+# Splits viable programs between classes completed and remaining classes
 def completion_separator(student_courses, student):
     cols = ['choice_list_1','choice_list_2','choice_list_3','choice_list_4','choice_list_5']
     
@@ -55,6 +77,7 @@ def completion_separator(student_courses, student):
 
     return student_courses
 
+# Helps with completion_separator function
 def completion_separator_choice_helper(data, list_name, student):
     data['completed_'+list_name] = data[list_name].apply(lambda x: tuple(value for value in x if value in student))
     data['remaining_'+list_name] = data[list_name].apply(lambda x: tuple(value for value in x if value not in student))
@@ -65,6 +88,7 @@ def completion_separator_choice_helper(data, list_name, student):
     
     return data
 
+# Determines prereqs for given student
 def prereq_lister(student):
     requirements = load_ex_dataset()
     found = req_finder(requirements, student)
