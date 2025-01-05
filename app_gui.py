@@ -9,6 +9,9 @@ class PreReqDetect:
         self.root = root
         self.root.title("PreReqDetect")
 
+        self.title_label = tk.Label(root, text="PreReq Detect", font=("Arial", 32, "bold"))
+        self.title_label.pack(pady=20)
+
         # Intialize Separated Data Storage
         self.separated = pd.DataFrame()
 
@@ -21,7 +24,7 @@ class PreReqDetect:
 
         # Initialize Textbox
         self.textbox = tk.Entry(root, width=50, font=('Arial', 16))
-        self.textbox.pack(pady=10)
+        self.textbox.pack(padx=10,pady=10)
 
         # Initialize Add Button
         self.add_button = tk.Button(root, text="Add Class", font=('Arial', 16), command=self.add_to_list)
@@ -33,10 +36,6 @@ class PreReqDetect:
 
         # Initialize Second Frame
         self.second_frame = tk.Frame(root)
-
-        # Initialize Reset Button
-        #self.reset_button = tk.Button(self.second_frame, text="Reset", command=self.reset_app)
-        #self.reset_button.pack(pady=5)
 
     def add_to_list(self):
         # Extract Text
@@ -60,6 +59,7 @@ class PreReqDetect:
             print(self.separated)
 
             # Hide Buttons and Textbox
+            self.title_label.pack_forget()
             self.textbox.pack_forget()
             self.add_button.pack_forget()
             self.submit_button.pack_forget()
@@ -74,37 +74,45 @@ class PreReqDetect:
 
     def load_dataframe(self):
 
+        # Remove Added Widgets from Second Frame
         for widget in self.second_frame.winfo_children():
             widget.destroy()
 
-        # Example DataFrame
+        # Results DataFrame
         df = prereq.prereq_lister(self.data_list)
 
         # Create a Notebook (tabbed interface)
         notebook = ttk.Notebook(self.second_frame)
         notebook.pack(fill=tk.BOTH, expand=True, pady=10)
 
-        # Create the 'Reset' button below the tabs
+        # Add Reset button below the tabs
         self.reset_button = tk.Button(self.second_frame, text="Reset", command=self.reset_app)
         self.reset_button.pack(side=tk.BOTTOM, pady=10)
 
+        # Iterate through each row
         for _, row in df.iterrows():
             # Create a new tab for each title
             frame = ttk.Frame(notebook)
             notebook.add(frame, text=row['title'])
 
+            #Check through each course list
             for col in ['required_courses','choice_list_1','choice_list_2','choice_list_3','choice_list_4','choice_list_5']:
+                #Check if over required courses column
                 if col == 'required_courses':
+                    # Check for remaining courses and add list title
                     if len(row['remaining_'+col]) > 0:
                         list_label = tk.Label(frame, text=str(col.replace('_', ' ') + ' - ' + str(len(row['remaining_'+col])) + ' Remaining').title())
                         list_label.pack(anchor="w", pady=2)
 
+                        # List out each remaining required course
                         for item in row['remaining_'+col]:
                             item_label = tk.Label(frame, text=(f"- {item}").replace('_', ' ').upper(), anchor="w")
                             item_label.pack(anchor="w", padx=10)
+                #Check other lists for remaining courses and add list titles
                 elif row[col+'_num_remaining'] != 0:
                     list_label = tk.Label(frame, text= str(col.replace('_', ' ') + ' - ' + str(row[col+'_num_remaining']) + ' Remaining').title())
                     list_label.pack(anchor="w", pady=2)
+                    # List out each remaining required course
                     for item in row['remaining_'+col]:
                         item_label = tk.Label(frame, text=(f"- {item}").replace('_', ' ').upper(), anchor="w")
                         item_label.pack(anchor="w", padx=10)
@@ -122,7 +130,8 @@ class PreReqDetect:
         self.second_frame.pack_forget()
 
         # Return Buttons and Textbox
-        self.textbox.pack(pady=10)
+        self.title_label.pack(pady=20)
+        self.textbox.pack(padx=10, pady=10)
         self.add_button.pack(pady=5)
         self.submit_button.pack(pady=5)
 

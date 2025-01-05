@@ -3,10 +3,10 @@ import pandas as pd
 def load_ex_dataset():
     requirements = pd.DataFrame({
                              'title' : ['minor_cs', 'certificate_ds'],
-                             'required_courses' : [['cs_124', 'cs_128', 'cs_173', 'cs_225'], ['stat_107', 'stat_207']],
-                             'choice_list_1' : [['cs_307', 'cs_340', 'cs_341', 'cs_357', 'cs_361', 'cs_374', 'cs_407', 'cs_409'], ['math_227', 'math_257']],
+                             'required_courses' : [['CS 124', 'CS 128', 'CS 173', 'CS 225'], ['STAT 107', 'STAT 207']],
+                             'choice_list_1' : [['CS 307', 'CS 340', 'CS 341', 'CS 357', 'CS 361', 'CS 374', 'CS 407', 'CS 409'], ['MATH 227', 'MATH 257']],
                              'choice_list_1_num' : [2, 1],
-                             'choice_list_2' : [[], ['stat_385', 'stat_420', 'stat_440', 'stat_480']],
+                             'choice_list_2' : [[], ['STAT 385', 'STAT 420', 'STAT 440', 'STAT 480']],
                              'choice_list_2_num' : [0, 1],
                              'choice_list_3' : [[], []],
                              'choice_list_3_num' : [0, 0],
